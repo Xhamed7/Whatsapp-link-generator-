@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Link Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #4caf50;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e7f5e8;
+      border: 1px solid #c1e2c4;
+      border-radius: 4px;
+      color: #2e7d32;
+    }
+    .copy-btn {
+      margin-top: 10px;
+      background-color: #007bff;
+    }
+    .copy-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WhatsApp Link Generator</h1>
+    <form>
+      <label for="country-code">Country Code (Select or Enter):</label>
+      <select id="country-code-dropdown" name="country-code-dropdown">
+        <option value="1">United States (+1)</option>
+        <option value="91">India (+91)</option>
+        <option value="44">United Kingdom (+44)</option>
+        <option value="61">Australia (+61)</option>
+        <option value="86">China (+86)</option>
+        <option value="49">Germany (+49)</option>
+        <option value="33">France (+33)</option>
+        <option value="81">Japan (+81)</option>
+        <option value="7">Russia (+7)</option>
+        <option value="34">Spain (+34)</option>
+        <option value="39">Italy (+39)</option>
+        <option value="55">Brazil (+55)</option>
+        <option value="27">South Africa (+27)</option>
+        <option value="63">Philippines (+63)</option>
+        <option value="52">Mexico (+52)</option>
+        <option value="64">New Zealand (+64)</option>
+        <option value="82">South Korea (+82)</option>
+        <option value="971">United Arab Emirates (+971)</option>
+      </select>
+
+      <input type="text" id="custom-country-code" name="custom-country-code" placeholder="Or enter a custom code (e.g., 123)">
+
+      <label for="phone-number">Phone Number:</label>
+      <input type="text" id="phone-number" name="phone-number" placeholder="e.g., 1234567890">
+
+      <label for="welcome-message">Welcome Message:</label>
+      <input type="text" id="welcome-message" name="welcome-message" placeholder="Type your message here">
+
+      <button type="submit">Generate WhatsApp Link</button>
+    </form>
+    <div id="result"></div>
+    <button class="copy-btn" id="copy-btn" style="display:none;">Copy Link</button>
+  </div>
+
+  <script>
+    const form = document.querySelector('form');
+    const resultDiv = document.querySelector('#result');
+    const copyBtn = document.querySelector('#copy-btn');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Get the value from the dropdown or the text box
+      const dropdownCode = document.querySelector('#country-code-dropdown').value;
+      const customCode = document.querySelector('#custom-country-code').value;
+      const countryCode = customCode || dropdownCode;
+
+      const phoneNumber = document.querySelector('#phone-number').value;
+      const welcomeMessage = encodeURIComponent(document.querySelector('#welcome-message').value);
+
+      const whatsappLink = `https://wa.me/${countryCode}${phoneNumber}?text=${welcomeMessage}`;
+      resultDiv.innerText = `Your WhatsApp link is: ${whatsappLink}`;
+      copyBtn.style.display = 'block';
+
+      // Save link in the copy button dataset
+      copyBtn.dataset.link = whatsappLink;
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const link = copyBtn.dataset.link;
+      navigator.clipboard.writeText(link).then(() => {
+        alert('Link copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy the link.');
+      });
+    });
+  </script>
+</body>
+</html>
